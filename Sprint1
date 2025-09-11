@@ -1,1 +1,44 @@
+LEITOR DE PLACAS - SPRINT 1 (11/09)
 
+Membros:
+
+Enéias Hamid Moreira Bravos - 2210367
+
+Maria Clara Lopes Dantas - 2216826
+
+Marcelo Carvalho de Assis Filho - 2210353
+
+Objetivo do Sprint 1:
+Implementar o pré-processamento e a detecção inicial de placas de veículos, preparando a base para extração de caracteres no próximo sprint.
+
+Metas de PDI para entrega até 25/09
+1. Pré-processamento de imagem
+
+O objetivo é melhorar a qualidade da imagem para facilitar a detecção da placa.
+
+Conversão para tons de cinza:
+Simplifica o processamento, reduzindo a quantidade de informação de cor e mantendo apenas intensidade luminosa.
+
+Redução de ruído (filtro médio ou Gaussiano):
+Remove imperfeições e suaviza a imagem, aumentando a precisão da detecção de bordas e contornos.
+
+Equalização de histograma:
+Aumenta o contraste da imagem, permitindo a identificação da placa mesmo em condições de iluminação variáveis.
+
+2. Segmentação e localização da placa
+
+O objetivo é isolar a região da placa na imagem para posterior reconhecimento de caracteres.
+
+Detecção de bordas (Canny):
+Realça regiões de transição de intensidade, destacando contornos que podem corresponder à placa do veículo.
+
+Filtragem por proporção e geometria:
+Seleciona possíveis regiões candidatas à placa com base em tamanho e razão de aspecto típicos.
+
+3. Entregáveis do Sprint 1
+
+Código funcional que recebe uma imagem e aplica pré-processamento (cinza, ruído, equalização).
+
+Implementação da detecção inicial de bordas e seleção de regiões candidatas à placa.
+
+Relatório com imagens demonstrando os efeitos de cada etapa de pré-processamento e localização.
