@@ -1,1 +1,54 @@
+LEITOR DE PLACAS - SPRINT 2 (25/09)
 
+Membros:
+
+Enéias Hamid Moreira Bravos - 2210367
+
+Maria Clara Lopes Dantas - 2216826
+
+Marcelo Carvalho de Assis Filho - 2210353
+
+Objetivo do Sprint 2:
+Implementar o reconhecimento de caracteres da placa detectada, usando técnicas de OCR (Reconhecimento Óptico de Caracteres) para extrair as letras e números da placa, transformando a imagem da placa em texto legível.
+
+Metas de PDI para entrega até 09/10
+
+1.Extração de Caracteres da Placa
+
+O objetivo é identificar e extrair os caracteres visíveis na placa, utilizando técnicas de OCR após a detecção da região da placa.
+
+Pré-processamento de Texto:
+
+Binarização (Thresholding): Aplicar binarização adaptativa para separar os caracteres do fundo, deixando apenas a parte relevante da imagem (os números e letras).
+
+Remoção de ruído nos caracteres: Usar técnicas para remover artefatos que possam interferir no reconhecimento, como pequenas imperfeições ao redor dos caracteres.
+
+Segmentação de Caracteres:
+
+Contorno e segmentação dos caracteres individuais: Após a localização da placa, dividir a área da placa em segmentos individuais, isolando cada caractere.
+
+Redimensionamento dos caracteres (caso necessário): Normalizar o tamanho dos caracteres para otimizar o desempenho do OCR.
+
+2.Reconhecimento de Caracteres (OCR)
+
+Aplicar técnicas de OCR para transformar a imagem dos caracteres em texto.
+
+Utilização do Tesseract ou similar: Integrar uma biblioteca OCR, como o Tesseract, para realizar a conversão das imagens dos caracteres extraídos em texto.
+
+Treinamento de OCR (se necessário): Caso a acurácia do OCR inicial não seja satisfatória, treinar um modelo para melhorar o reconhecimento, considerando fontes e variações de placas.
+
+3.Pós-processamento de Texto
+
+O objetivo é aprimorar o texto extraído, tratando erros comuns no reconhecimento.
+
+Correção de erros ortográficos: Usar algoritmos de correção automática para lidar com erros típicos de OCR, como caracteres incorretos.
+
+Validação do formato da placa: Verificar se o texto extraído segue o formato esperado de placas de veículos (ex: 3 letras seguidas por 4 números, ou variações dependendo da região).
+
+Entregáveis do Sprint 2
+
+Código funcional que recebe uma imagem da placa, realiza a extração de caracteres, e gera um texto correspondente à leitura da placa.
+
+Implementação do OCR, com segmentação dos caracteres e uso de Tesseract ou outra ferramenta de OCR para extração do texto.
+
+Relatório com as imagens de placas, mostrando as etapas de pré-processamento, segmentação e leitura, além de uma análise dos resultados do OCR e possíveis melhorias.
