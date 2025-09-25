@@ -45,7 +45,7 @@ Correção de erros ortográficos: Usar algoritmos de correção automática par
 
 Validação do formato da placa: Verificar se o texto extraído segue o formato esperado de placas de veículos (ex: 3 letras seguidas por 4 números, ou variações dependendo da região).
 
-4.Planejamento de interface
+4.Planejamento da interface
 
 Analise de modelo e estruturação da interface que será integradas
 
