@@ -1,0 +1,85 @@
+LEITOR DE PLACAS - SPRINT 3 (09/10)
+
+Membros:
+
+Enéias Hamid Moreira Bravos - 2210367
+
+Maria Clara Lopes Dantas - 2216826
+
+Marcelo Carvalho de Assis Filho - 2210353
+
+Objetivo do Sprint 3:
+
+Desenvolver a interface gráfica do projeto para permitir a interação do usuário com o sistema, de forma intuitiva e eficiente. A interface irá exibir a imagem da placa, o texto extraído pelo OCR, e possibilitar o carregamento de novas imagens.
+
+Metas de PDI para entrega até 23/10
+
+Design da Interface Gráfica:
+
+Definir a estrutura da interface, com as seguintes seções:
+
+Exibição da Imagem da Placa: Área para exibir a imagem carregada e destacada, mostrando claramente os contornos da placa.
+
+Texto Extraído: Área onde o texto extraído da placa será exibido após o processamento.
+
+Botões de Interação:
+
+Carregar Imagem: Permitir ao usuário carregar uma imagem de uma placa.
+
+Iniciar Leitura: Processar a imagem carregada para realizar a detecção e extração dos caracteres.
+
+Limpar Tela: Botão para limpar a imagem e o texto extraído.
+
+Escolha de cores, fontes e elementos visuais para garantir clareza e boa usabilidade.
+
+Implementação da Interface Gráfica:
+
+Escolha da ferramenta/tecnologia para a implementação (ex: Tkinter, PyQt, etc.).
+
+Integração do modelo de OCR com a interface para mostrar o resultado após a leitura da placa.
+
+Exibição do resultado com destaque visual para a área da placa detectada na imagem.
+
+Carregamento e Exibição de Imagem:
+
+Implementação de um sistema que permite ao usuário carregar uma imagem localmente.
+
+Exibição da imagem com destaque da região da placa após a detecção.
+
+Garantir que a interface consiga lidar com imagens de diferentes resoluções e tamanhos.
+
+Integração do OCR com a Interface:
+
+Conectar a funcionalidade de OCR com a interface gráfica, de forma que, após o carregamento da imagem, o sistema realize a extração do texto automaticamente.
+
+Exibição do texto extraído na interface, com a possibilidade de correção manual de eventuais erros.
+
+Testes de Usabilidade e Ajustes de Design:
+
+Realizar testes com usuários para avaliar a facilidade de uso da interface e corrigir possíveis falhas de interação.
+
+Ajustes no design e layout conforme o feedback obtido.
+
+Documentação do Design da Interface:
+
+Criar uma documentação do processo de design da interface gráfica, incluindo escolhas de layout, cores, e funcionalidade.
+
+Documentar as interações e comportamento esperado da interface.
+
+Entregáveis do Sprint 3:
+
+Interface Gráfica Funcional:
+
+Interface gráfica completa com a funcionalidade de carregamento de imagem, exibição da imagem com a placa destacada, e exibição do texto extraído.
+
+Código da Interface:
+
+Código-fonte com a implementação da interface gráfica e integração com o sistema de OCR.
+
+Relatório de Usabilidade e Ajustes:
+
+Relatório sobre o processo de testes de usabilidade e melhorias feitas no design da interface.
+
+Documentação Técnica:
+
+Documentação detalhada sobre o design, estrutura e comportamento da interface.
