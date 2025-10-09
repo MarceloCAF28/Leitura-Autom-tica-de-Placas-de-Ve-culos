@@ -34,8 +34,6 @@ Escolha de cores, fontes e elementos visuais para garantir clareza e boa usabili
 
 Implementação da Interface Gráfica:
 
-Escolha da ferramenta/tecnologia para a implementação (ex: Tkinter, PyQt, etc.).
-
 Integração do modelo de OCR com a interface para mostrar o resultado após a leitura da placa.
 
 Exibição do resultado com destaque visual para a área da placa detectada na imagem.
