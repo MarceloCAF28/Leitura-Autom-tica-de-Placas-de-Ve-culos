@@ -28,8 +28,6 @@ Carregar Imagem: Permitir ao usuário carregar uma imagem de uma placa.
 
 Iniciar Leitura: Processar a imagem carregada para realizar a detecção e extração dos caracteres.
 
-Limpar Tela: Botão para limpar a imagem e o texto extraído.
-
 Escolha de cores, fontes e elementos visuais para garantir clareza e boa usabilidade.
 
 Implementação da Interface Gráfica:
