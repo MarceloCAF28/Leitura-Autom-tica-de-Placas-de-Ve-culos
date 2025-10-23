@@ -1,0 +1,130 @@
+LEITOR DE PLACAS - SPRINT 4 (23/10)
+Membros:
+
+Enéias Hamid Moreira Bravos – 2210367
+
+Maria Clara Lopes Dantas – 2216826
+
+Marcelo Carvalho de Assis Filho – 2210353
+
+Objetivo do Sprint 4:
+
+Integrar o sistema de leitura de placas com um banco de dados MySQL, permitindo o registro automático de entrada e saída de veículos no estacionamento e a pesquisa de placas específicas. O sistema deverá armazenar informações detalhadas, incluindo número da placa, horário de entrada, horário de saída e status do veículo (dentro ou fora).
+
+Metas de PDI para entrega até 06/11
+1. Integração com o Banco de Dados MySQL
+
+Configurar o servidor MySQL e criar o banco de dados leitor_placas.
+
+Criar a tabela principal estacionamento com os seguintes campos:
+
+id (INT, chave primária, auto incremento)
+
+placa (VARCHAR, texto extraído pelo OCR)
+
+horario_entrada (DATETIME)
+
+horario_saida (DATETIME)
+
+status (VARCHAR, indicando “Dentro” ou “Fora”)
+
+Implementar a conexão entre o código Python e o banco MySQL utilizando a biblioteca mysql.connector.
+
+Garantir operações básicas: inserção, atualização, pesquisa e exclusão de dados.
+
+2. Registro Automático de Entrada e Saída
+
+Criar a lógica de registro de presença:
+
+Se a placa ainda não estiver registrada com status “Dentro”, o sistema deve registrar o horário de entrada e marcar como “Dentro”.
+
+Se a placa já estiver registrada como “Dentro”, o sistema deve registrar o horário de saída e alterar o status para “Fora”.
+
+Implementar confirmação visual ou em console informando a ação executada.
+
+Validar o tratamento de placas duplicadas ou não reconhecidas.
+
+3. Integração da Interface com o Banco de Dados
+
+Adaptar a interface gráfica da Sprint 3 para exibir e manipular os dados armazenados no banco MySQL.
+
+Criar as seguintes seções adicionais na interface:
+
+Área de Histórico: mostrando as últimas placas registradas, com seus horários de entrada e saída.
+
+Área de Pesquisa: campo de texto para inserir uma placa e botão “Pesquisar Placa”.
+
+Ao clicar, o sistema buscará no banco e exibirá o histórico completo daquela placa (data/hora de entrada e saída, status atual).
+
+Adicionar também os botões:
+
+“Consultar Histórico Completo” — mostra todos os registros armazenados no banco.
+
+“Limpar Registros (Teste)” — remove todos os dados do banco (para fins de teste e manutenção).
+
+4. Testes de Integração e Validação
+
+Testar o sistema com múltiplas imagens de placas, verificando:
+
+Registro correto de entrada e saída no banco.
+
+Atualização automática dos horários.
+
+Pesquisa e retorno de dados corretos ao digitar uma placa.
+
+Verificar persistência dos dados no banco após o fechamento e reabertura do sistema.
+
+Validar a estabilidade da conexão com o servidor MySQL.
+
+5. Documentação Técnica da Integração
+
+Descrever a configuração do MySQL e o processo de conexão com o Python.
+
+Incluir o diagrama da tabela e um fluxograma do processo de entrada e saída.
+
+Documentar as funções principais:
+
+inserir_entrada(placa)
+
+registrar_saida(placa)
+
+buscar_placa(placa)
+
+listar_historico()
+
+Detalhar como a interface gráfica interage com o banco de dados em tempo real.
+
+Entregáveis do Sprint 4
+1. Código Integrado com MySQL
+
+Código-fonte atualizado com integração total entre OCR, interface gráfica e banco MySQL.
+
+Implementação das funções de entrada, saída e pesquisa de placa.
+
+2. Banco de Dados MySQL Configurado
+
+Script .sql para criação da base leitor_placas e tabela estacionamento.
+
+Banco funcional e testado com dados de exemplo.
+
+3. Interface Gráfica Atualizada
+
+Interface com campo de pesquisa por placa e exibição dos registros em tempo real.
+
+Botões adicionais para histórico e limpeza de dados.
+
+4. Relatório de Testes e Resultados
+
+Casos de teste realizados (entrada, saída, pesquisa, atualização).
+
+Prints da interface e consultas MySQL realizadas.
+
+Análise de desempenho e consistência dos dados.
+
+5. Documentação Técnica
+
+Detalhamento da estrutura do banco de dados.
+
+Descrição das funções e fluxos de integração.
+
+Guia de configuração do MySQL e conexão com o sistema.
