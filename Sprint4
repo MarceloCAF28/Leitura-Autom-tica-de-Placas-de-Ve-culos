@@ -9,7 +9,8 @@ Marcelo Carvalho de Assis Filho – 2210353
 
 Objetivo do Sprint 4:
 
-Integrar o sistema de leitura de placas com um banco de dados MySQL, permitindo o registro automático de entrada e saída de veículos no estacionamento e a pesquisa de placas específicas. O sistema deverá armazenar informações detalhadas, incluindo número da placa, horário de entrada, horário de saída e status do veículo (dentro ou fora).
+Integrar o sistema de leitura de placas com um banco de dados MySQL, permitindo o registro automático de entrada e saída de veículos no estacionamento e a pesquisa de placas específicas. 
+O sistema deverá armazenar informações detalhadas, incluindo número da placa, horário de entrada, horário de saída e status do veículo (dentro ou fora).
 
 Metas de PDI para entrega até 06/11
 1. Integração com o Banco de Dados MySQL
