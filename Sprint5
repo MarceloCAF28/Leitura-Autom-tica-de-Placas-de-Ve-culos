@@ -20,8 +20,6 @@ Aumentar a quantidade de imagens no banco SQLite.
 
 Melhorar a estrutura de indexação e busca para agilizar a exibição de registros com várias imagens associadas.
 
-Implementar rotina de limpeza e compactação do banco para garantir integridade e economia de espaço.
-
 2. Melhoria da Interface Gráfica
 
 Atualizar o layout Tkinter para um design mais moderno e intuitivo:
