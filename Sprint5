@@ -1,4 +1,4 @@
-🧠 LEITOR DE PLACAS – SPRINT 5 (06/11)
+LEITOR DE PLACAS – SPRINT 5 (06/11)
 
 Membros:
 
@@ -8,32 +8,29 @@ Maria Clara Lopes Dantas – 2216826
 
 Marcelo Carvalho de Assis Filho – 2210353
 
-🎯 Objetivo do Sprint 5
+Objetivo do Sprint 5
 
-Aprimorar o sistema de leitura de placas desenvolvido na Sprint 4, aumentando a capacidade do banco de dados para armazenar um número maior de imagens por registro, otimizando o desempenho das consultas e melhorando a interface gráfica e a precisão do OCR (reconhecimento óptico de caracteres).
+Aprimorar o sistema de leitura de placas desenvolvido na Sprint 4, aumentando a capacidade do banco de dados para armazenar um número maior de imagens por registro, 
+otimizando o desempenho das consultas e melhorando a interface gráfica e a precisão do OCR (reconhecimento óptico de caracteres).
 
-🧩 Metas de PDI para entrega até 20/11
+Metas de PDI para entrega até 20/11
 1. Expansão e Otimização do Banco de Dados
 
-Aumentar a capacidade de armazenamento de imagens no banco SQLite, ajustando o modelo de dados e o gerenciamento de arquivos para suportar maior volume de imagens sem perda de desempenho.
+Aumentar a quantidade de imagens no banco SQLite.
 
 Melhorar a estrutura de indexação e busca para agilizar a exibição de registros com várias imagens associadas.
 
 Implementar rotina de limpeza e compactação do banco para garantir integridade e economia de espaço.
 
-Criar verificação automática de limite de armazenamento e alertas visuais quando o banco atingir determinado percentual de ocupação.
-
 2. Melhoria da Interface Gráfica
 
 Atualizar o layout Tkinter para um design mais moderno e intuitivo:
 
-Organização por abas (usando ttk.Notebook) com seções “Leitura”, “Histórico”, “Banco de Dados” e “Configurações”.
+Organização por abas com seções “Leitura”, “Histórico”, “Banco de Dados” e “Configurações”.
 
 Exibição de miniaturas otimizadas das imagens armazenadas.
 
 Melhor feedback visual de status (carregamento, leitura, erro, conexão).
-
-Implementar barra de progresso para exibir o andamento de operações demoradas (como carregamento de imagens).
 
 Tornar a interface responsiva, ajustando automaticamente tamanhos de quadros e fontes.
 
@@ -47,12 +44,6 @@ Implementar ajuste automático de contraste e brilho conforme a iluminação det
 
 Testar variações de binarização (limiarização adaptativa, Otsu, etc.) para reduzir falsos positivos.
 
-Adicionar modo configurável de OCR:
-
-“Rápido” – voltado para testes e capturas em tempo real.
-
-“Avançado” – voltado para máxima precisão em condições de baixa qualidade da imagem.
-
 4. Armazenamento e Gerenciamento de Imagens
 
 Otimizar o processo de gravação das imagens no banco, reduzindo tempo de inserção e evitando duplicidades.
@@ -61,11 +52,9 @@ Permitir configuração da quantidade máxima de imagens armazenadas por placa, 
 
 Implementar botão para limpar imagens antigas ou exportar conjunto de imagens associadas a uma placa.
 
-Melhorar o carregamento das miniaturas, utilizando cache temporário para reduzir o uso de memória.
-
 5. Testes e Validação
 
-Realizar testes de desempenho do banco com diferentes quantidades de imagens por placa (ex: 5, 10, 20, 50).
+Realizar testes de desempenho do banco com diferentes quantidades de imagens por placa 
 
 Avaliar o impacto das otimizações na velocidade de busca, carregamento e exibição.
 
@@ -79,13 +68,7 @@ Atualizar o diagrama do banco de dados refletindo os ajustes para maior capacida
 
 Documentar as novas funções implementadas para otimização e limpeza do banco:
 
-otimizar_banco(), limpar_imagens_antigas(), exportar_imagens_placa().
-
-Incluir guia de calibração do OCR, explicando como ajustar os parâmetros de nitidez, contraste e brilho.
-
-Atualizar fluxogramas do processo de detecção e armazenamento.
-
-📦 Entregáveis do Sprint 5
+Entregáveis do Sprint 5
 
 Banco de Dados Otimizado
 
@@ -103,8 +86,6 @@ Código-Fonte Aprimorado
 
 Processamento de imagem e OCR otimizados para maior precisão.
 
-Funções de manutenção e controle do banco integradas.
-
 Relatório de Testes e Resultados
 
 Comparativo de desempenho antes e depois das melhorias.
@@ -116,7 +97,5 @@ Prints e evidências do sistema atualizado.
 Documentação Técnica Revisada
 
 Diagrama e fluxogramas atualizados.
-
-Guia de uso e calibração do OCR.
 
 Descrição das novas funções de banco e interface.
