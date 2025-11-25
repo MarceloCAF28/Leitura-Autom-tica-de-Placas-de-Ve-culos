@@ -1,0 +1,12 @@
+pip install flask
+pip install opencv-python
+pip install numpy
+pip install pytesseract
+pip install werkzeug
+pip install easyocr
+pip install torch
+pip install torchvision torchaudio --index-url https://download.pytorch.org/whl/cu118
+pip install pillow
+pip install matplotlib
+pip install scikit-image
+pip install python-dotenv

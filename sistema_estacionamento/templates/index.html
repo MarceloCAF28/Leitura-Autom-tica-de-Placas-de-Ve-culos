@@ -1,0 +1,1154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚗 Sistema de Estacionamento Inteligente</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --primary: #2c3e50;
+            --secondary: #3498db;
+            --success: #27ae60;
+            --warning: #f39c12;
+            --danger: #e74c3c;
+            --dark: #34495e;
+            --light: #ecf0f1;
+            --gray: #95a5a6;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            color: #333;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        /* Header */
+        .header {
+            background: var(--primary);
+            color: white;
+            padding: 25px;
+            border-radius: 15px 15px 0 0;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-align: center;
+        }
+
+        .status-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: rgba(255,255,255,0.1);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        .status-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .status-badge {
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .status-success { background: var(--success); }
+        .status-warning { background: var(--warning); }
+        .status-danger { background: var(--danger); }
+
+        /* Main Grid */
+        .main-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+
+        @media (max-width: 1024px) {
+            .main-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Cards */
+        .card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 35px rgba(0,0,0,0.15);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid var(--light);
+        }
+
+        .card-header i {
+            font-size: 1.5em;
+            color: var(--secondary);
+        }
+
+        .card-header h2 {
+            color: var(--primary);
+            font-size: 1.4em;
+        }
+
+        /* Forms */
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: var(--dark);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid var(--light);
+            border-radius: 8px;
+            font-size: 16px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--secondary);
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 12px 25px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            text-decoration: none;
+        }
+
+        .btn-block {
+            width: 100%;
+            justify-content: center;
+        }
+
+        .btn-primary { background: var(--secondary); color: white; }
+        .btn-success { background: var(--success); color: white; }
+        .btn-warning { background: var(--warning); color: white; }
+        .btn-danger { background: var(--danger); color: white; }
+        .btn-dark { background: var(--dark); color: white; }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn-sm {
+            padding: 8px 15px;
+            font-size: 14px;
+        }
+
+        /* Image Processing */
+        .image-container {
+            border: 2px dashed var(--gray);
+            border-radius: 10px;
+            padding: 20px;
+            text-align: center;
+            margin-bottom: 20px;
+            background: var(--light);
+            min-height: 200px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .image-preview {
+            max-width: 100%;
+            max-height: 300px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .upload-area {
+            cursor: pointer;
+            padding: 20px;
+        }
+
+        .upload-area i {
+            font-size: 3em;
+            color: var(--gray);
+            margin-bottom: 10px;
+        }
+
+        /* Results */
+        .result-container {
+            background: var(--light);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+        }
+
+        .placa-result {
+            font-size: 2em;
+            font-weight: bold;
+            text-align: center;
+            color: var(--primary);
+            margin: 10px 0;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 3px;
+        }
+
+        /* Statistics */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            color: var(--secondary);
+            margin: 10px 0;
+        }
+
+        .stat-label {
+            color: var(--gray);
+            font-size: 0.9em;
+        }
+
+        /* Tables */
+        .table-container {
+            overflow-x: auto;
+            margin-top: 20px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            padding: 15px;
+            text-align: left;
+            border-bottom: 1px solid var(--light);
+        }
+
+        th {
+            background: var(--primary);
+            color: white;
+            font-weight: 600;
+        }
+
+        tr:hover {
+            background: var(--light);
+        }
+
+        .status-badge-small {
+            padding: 4px 12px;
+            border-radius: 15px;
+            font-size: 0.8em;
+            font-weight: bold;
+        }
+
+        /* Navigation */
+        .nav-tabs {
+            display: flex;
+            background: var(--light);
+            border-radius: 10px;
+            padding: 5px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            min-width: 120px;
+        }
+
+        .nav-tab.active {
+            background: var(--secondary);
+            color: white;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        /* Alerts */
+        .alert {
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid;
+        }
+
+        .alert-success {
+            background: #d4edda;
+            border-color: var(--success);
+            color: #155724;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            border-color: var(--danger);
+            color: #721c24;
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background: white;
+            margin: 5% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 600px;
+            position: relative;
+        }
+
+        .close {
+            position: absolute;
+            right: 20px;
+            top: 15px;
+            font-size: 28px;
+            cursor: pointer;
+        }
+
+        /* Search and Filter */
+        .search-box {
+            background: var(--light);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+        }
+
+        .filter-buttons {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .status-bar {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .card {
+                padding: 15px;
+            }
+            
+            .nav-tabs {
+                flex-direction: column;
+            }
+        }
+
+        /* Animations */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.5s ease;
+        }
+
+        /* Config Section */
+        .config-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .config-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .danger-zone {
+            border-left: 4px solid var(--danger);
+            background: #f8d7da;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+        }
+
+        .input-group-text {
+            background: var(--light);
+            padding: 12px 15px;
+            border: 2px solid var(--light);
+            border-right: none;
+            border-radius: 8px 0 0 8px;
+        }
+
+        .input-group .form-control {
+            border-radius: 0 8px 8px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <div class="header">
+            <h1><i class="fas fa-car"></i> Sistema de Estacionamento Inteligente</h1>
+            <p>Controle completo de entrada, saída e reconhecimento de placas automático</p>
+            
+            <div class="status-bar">
+                <div class="status-item">
+                    <span>Status OCR:</span>
+                    <span class="status-badge {% if tesseract_configurado %}status-success{% else %}status-danger{% endif %}">
+                        {% if tesseract_configurado %}✅ CONFIGURADO{% else %}❌ NÃO DISPONÍVEL{% endif %}
+                    </span>
+                </div>
+                <div class="status-item">
+                    <span>Banco de Dados:</span>
+                    <span class="status-badge status-success">✅ CONECTADO</span>
+                </div>
+                <div class="status-item">
+                    <span>Servidor:</span>
+                    <span class="status-badge status-success">✅ ONLINE</span>
+                </div>
+                <div class="status-item">
+                    <span>Hora:</span>
+                    <span class="status-badge" id="currentTime">{{ now.strftime('%H:%M:%S') }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ 'success' if category == 'success' else 'error' }} fade-in">
+                        <i class="fas fa-{{ 'check-circle' if category == 'success' else 'exclamation-triangle' }}"></i>
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+
+        <!-- Navigation Tabs -->
+        <div class="nav-tabs">
+            <div class="nav-tab {% if aba_atual == 'tab-dashboard' %}active{% endif %}" onclick="openTab('tab-dashboard')">
+                <i class="fas fa-tachometer-alt"></i> Dashboard
+            </div>
+            <div class="nav-tab {% if aba_atual == 'tab-registros' %}active{% endif %}" onclick="openTab('tab-registros')">
+                <i class="fas fa-list"></i> Todos os Registros
+            </div>
+            <div class="nav-tab {% if aba_atual == 'tab-config' %}active{% endif %}" onclick="openTab('tab-config')">
+                <i class="fas fa-cog"></i> Configurações
+            </div>
+        </div>
+
+        <!-- Tab: Dashboard -->
+        <div id="tab-dashboard" class="tab-content {% if aba_atual == 'tab-dashboard' %}active{% endif %}">
+            <div class="main-grid">
+                <!-- Coluna Esquerda -->
+                <div>
+                    <!-- Card: Reconhecimento de Placas -->
+                    <div class="card fade-in">
+                        <div class="card-header">
+                            <i class="fas fa-camera"></i>
+                            <h2>Reconhecimento Automático de Placas</h2>
+                        </div>
+
+                        <div class="image-container" id="imageContainer">
+                            <div class="upload-area" id="uploadArea" onclick="document.getElementById('fileInput').click()">
+                                <i class="fas fa-cloud-upload-alt"></i>
+                                <p>Clique para selecionar uma imagem ou arraste aqui</p>
+                                <p class="stat-label">Formatos: JPG, PNG, JPEG</p>
+                            </div>
+                            <img id="imagePreview" class="image-preview" alt="Pré-visualização">
+                        </div>
+
+                        <input type="file" id="fileInput" accept="image/*" style="display: none;" onchange="processImage(this.files[0])">
+
+                        <div class="form-group">
+                            <button class="btn btn-primary btn-block" onclick="captureFromCamera()">
+                                <i class="fas fa-camera"></i> Capturar da Câmera
+                            </button>
+                        </div>
+
+                        <div id="processingResult" style="display: none;">
+                            <div class="result-container">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                                    <h3><i class="fas fa-search"></i> Resultado da Análise</h3>
+                                    <button class="btn btn-dark btn-sm" onclick="trocarImagem()">
+                                        <i class="fas fa-sync-alt"></i> Trocar Imagem
+                                    </button>
+                                </div>
+                                <div id="resultDetails"></div>
+                                <div class="placa-result" id="placaResult"></div>
+                                <div id="actionButtons" style="margin-top: 15px; display: flex; gap: 10px; justify-content: center;"></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card: Controle Rápido Manual -->
+                    <div class="card fade-in" style="margin-top: 20px;">
+                        <div class="card-header">
+                            <i class="fas fa-bolt"></i>
+                            <h2>Controle Rápido Manual</h2>
+                        </div>
+
+                        <form action="/registrar_entrada" method="post">
+                            <div class="form-group">
+                                <label for="placaEntrada"><i class="fas fa-sign-in-alt"></i> Registrar Entrada</label>
+                                <input type="text" id="placaEntrada" name="placa" class="form-control" 
+                                       placeholder="Digite a placa (ex: ABC1D23)" required
+                                       pattern="[A-Za-z0-9]{7}" title="Placa deve ter 7 caracteres alfanuméricos">
+                            </div>
+                            <button type="submit" class="btn btn-success btn-block">
+                                <i class="fas fa-check-circle"></i> Confirmar Entrada
+                            </button>
+                        </form>
+
+                        <form action="/registrar_saida" method="post" style="margin-top: 20px;">
+                            <div class="form-group">
+                                <label for="placaSaida"><i class="fas fa-sign-out-alt"></i> Registrar Saída</label>
+                                <input type="text" id="placaSaida" name="placa" class="form-control" 
+                                       placeholder="Digite a placa (ex: ABC1D23)" required
+                                       pattern="[A-Za-z0-9]{7}" title="Placa deve ter 7 caracteres alfanuméricos">
+                            </div>
+                            <button type="submit" class="btn btn-warning btn-block">
+                                <i class="fas fa-car-side"></i> Confirmar Saída
+                            </button>
+                        </form>
+                    </div>
+                </div>
+
+                <!-- Coluna Direita -->
+                <div>
+                    <!-- Card: Estatísticas em Tempo Real -->
+                    <div class="card fade-in">
+                        <div class="card-header">
+                            <i class="fas fa-chart-line"></i>
+                            <h2>Estatísticas em Tempo Real</h2>
+                        </div>
+
+                        <div class="stats-grid">
+                            <div class="stat-card">
+                                <i class="fas fa-car-side" style="color: var(--secondary); font-size: 2em;"></i>
+                                <div class="stat-number" id="estacionadosCount">{{ estatisticas.estacionados }}</div>
+                                <div class="stat-label">Veículos Estacionados</div>
+                            </div>
+                            <div class="stat-card">
+                                <i class="fas fa-money-bill-wave" style="color: var(--success); font-size: 2em;"></i>
+                                <div class="stat-number">R$ <span id="faturamentoHoje">{{ "%.2f"|format(estatisticas.faturamento_hoje) }}</span></div>
+                                <div class="stat-label">Faturamento Hoje</div>
+                            </div>
+                            <div class="stat-card">
+                                <i class="fas fa-database" style="color: var(--warning); font-size: 2em;"></i>
+                                <div class="stat-number" id="totalRegistros">{{ estatisticas.total_registros }}</div>
+                                <div class="stat-label">Total de Registros</div>
+                            </div>
+                            <div class="stat-card">
+                                <i class="fas fa-clock" style="color: var(--danger); font-size: 2em;"></i>
+                                <div class="stat-number">
+                                    R$ <span id="valorHora">{{ "%.2f"|format(configuracao.valor_hora) if configuracao else '5.00' }}</span>
+                                </div>
+                                <div class="stat-label">Valor por Hora</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Card: Veículos Estacionados -->
+                    <div class="card fade-in" style="margin-top: 20px;">
+                        <div class="card-header">
+                            <i class="fas fa-parking"></i>
+                            <h2>Veículos Estacionados Agora</h2>
+                        </div>
+
+                        <div class="table-container">
+                            <table>
+                                <thead>
+                                    <tr>
+                                        <th>Placa</th>
+                                        <th>Entrada</th>
+                                        <th>Tempo</th>
+                                        <th>Ação</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for registro in registros %}
+                                    {% if registro.status == 'estacionado' %}
+                                    <tr>
+                                        <td><strong>{{ registro.placa }}</strong></td>
+                                        <td>{{ registro.horario_entrada[:16] if registro.horario_entrada }}</td>
+                                        <td>
+                                            {% if registro.horario_entrada %}
+                                                {% set entrada = registro.horario_entrada %}
+                                                {% if entrada is string %}
+                                                    {% set entrada = entrada[:19] %}
+                                                {% endif %}
+                                                <span class="tempo-decorrido" data-entrada="{{ entrada }}">Calculando...</span>
+                                            {% else %}
+                                                -
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            <form action="/registrar_saida" method="post" style="display: inline;">
+                                                <input type="hidden" name="placa" value="{{ registro.placa }}">
+                                                <button type="submit" class="btn btn-danger btn-sm">
+                                                    <i class="fas fa-sign-out-alt"></i> Saída
+                                                </button>
+                                            </form>
+                                        </td>
+                                    </tr>
+                                    {% endif %}
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="4" style="text-align: center; color: var(--gray);">
+                                            Nenhum veículo estacionado
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Todos os Registros -->
+        <div id="tab-registros" class="tab-content {% if aba_atual == 'tab-registros' %}active{% endif %}">
+            <div class="card">
+                <div class="card-header">
+                    <i class="fas fa-search"></i>
+                    <h2>Busca e Filtros de Registros</h2>
+                </div>
+
+                <div class="search-box">
+                    <div class="filter-buttons">
+                        <a href="/?filtro=todos&aba=tab-registros" class="btn {{ 'btn-primary' if filtro_atual == 'todos' else 'btn-dark' }}">
+                            <i class="fas fa-list"></i> Todos os Registros
+                        </a>
+                        <a href="/?filtro=estacionados&aba=tab-registros" class="btn {{ 'btn-warning' if filtro_atual == 'estacionados' else 'btn-dark' }}">
+                            <i class="fas fa-parking"></i> Apenas Estacionados
+                        </a>
+                    </div>
+
+                    <form action="/" method="get" style="display: grid; grid-template-columns: 1fr 1fr auto; gap: 10px; align-items: end;">
+                        <input type="hidden" name="aba" value="tab-registros">
+                        <div class="form-group">
+                            <label for="placaBusca"><i class="fas fa-car"></i> Buscar por Placa</label>
+                            <input type="text" id="placaBusca" name="placa" class="form-control" 
+                                   placeholder="Digite a placa..." value="{{ placa_busca }}">
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="diaBusca"><i class="fas fa-calendar"></i> Filtrar por Data</label>
+                            <input type="date" id="diaBusca" name="dia" class="form-control" value="{{ dia_busca }}">
+                        </div>
+
+                        <button type="submit" class="btn btn-success" style="height: fit-content;">
+                            <i class="fas fa-search"></i> Buscar
+                        </button>
+                    </form>
+
+                    {% if placa_busca or dia_busca %}
+                    <div style="margin-top: 15px; text-align: center;">
+                        <a href="/?aba=tab-registros" class="btn btn-dark btn-sm">
+                            <i class="fas fa-times"></i> Limpar Filtros
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="table-container">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Placa</th>
+                                <th>Entrada</th>
+                                <th>Saída</th>
+                                <th>Status</th>
+                                <th>Tempo</th>
+                                <th>Valor</th>
+                                <th>Data</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for registro in registros %}
+                            <tr>
+                                <td>{{ registro.id }}</td>
+                                <td><strong>{{ registro.placa }}</strong></td>
+                                <td>{{ registro.horario_entrada[:16] if registro.horario_entrada else '-' }}</td>
+                                <td>{{ registro.horario_saida[:16] if registro.horario_saida else '-' }}</td>
+                                <td>
+                                    <span class="status-badge-small {% if registro.status == 'estacionado' %}status-warning{% else %}status-success{% endif %}">
+                                        {{ registro.status.upper() }}
+                                    </span>
+                                </td>
+                                <td>{{ registro.tempo_permanencia or '-' }}</td>
+                                <td>
+                                    {% if registro.valor_cobrado %}
+                                        R$ {{ "%.2f"|format(registro.valor_cobrado) }}
+                                    {% else %}
+                                        -
+                                    {% endif %}
+                                </td>
+                                <td>{{ registro.dia }}</td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="8" style="text-align: center; color: var(--gray); padding: 30px;">
+                                    <i class="fas fa-search" style="font-size: 2em; margin-bottom: 10px;"></i>
+                                    <br>
+                                    Nenhum registro encontrado
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+                <div style="margin-top: 20px; text-align: center;">
+                    <p class="stat-label">
+                        Mostrando {{ registros|length }} registros
+                        {% if placa_busca %} para placa "{{ placa_busca }}"{% endif %}
+                        {% if dia_busca %} na data "{{ dia_busca }}"{% endif %}
+                        {% if filtro_atual == 'estacionados' %} (apenas estacionados){% endif %}
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Tab: Configurações -->
+        <div id="tab-config" class="tab-content {% if aba_atual == 'tab-config' %}active{% endif %}">
+            <div class="config-grid">
+                <!-- Configurações de Preços -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-money-bill-wave"></i>
+                        <h2>Configurações de Preços</h2>
+                    </div>
+
+                    <form action="/atualizar_configuracoes" method="post">
+                        <input type="hidden" name="aba" value="tab-config">
+                        <div class="form-group">
+                            <label for="valor_hora"><i class="fas fa-clock"></i> Valor por Hora (R$)</label>
+                            <div class="input-group">
+                                <span class="input-group-text">R$</span>
+                                <input type="number" id="valor_hora" name="valor_hora" class="form-control" 
+                                       step="0.01" min="0" value="{{ configuracao.valor_hora if configuracao else '5.00' }}" 
+                                       required>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="valor_diaria"><i class="fas fa-calendar-day"></i> Valor da Diária (R$)</label>
+                            <div class="input-group">
+                                <span class="input-group-text">R$</span>
+                                <input type="number" id="valor_diaria" name="valor_diaria" class="form-control" 
+                                       step="0.01" min="0" value="{{ configuracao.valor_diaria if configuracao else '50.00' }}" 
+                                       required>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="btn btn-success btn-block">
+                            <i class="fas fa-save"></i> Salvar Configurações
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Informações do Sistema -->
+                <div class="card">
+                    <div class="card-header">
+                        <i class="fas fa-info-circle"></i>
+                        <h2>Informações do Sistema</h2>
+                    </div>
+
+                    <div class="result-container">
+                        <div style="display: grid; gap: 15px;">
+                            <div style="display: flex; justify-content: space-between;">
+                                <span><strong>Versão do Sistema:</strong></span>
+                                <span>2.0.0</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span><strong>Banco de Dados:</strong></span>
+                                <span>SQLite ✅ Conectado</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span><strong>OCR Tesseract:</strong></span>
+                                <span>{% if tesseract_configurado %}✅ Configurado{% else %}❌ Não disponível{% endif %}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span><strong>Total de Registros:</strong></span>
+                                <span>{{ estatisticas.total_registros }}</span>
+                            </div>
+                            <div style="display: flex; justify-content: space-between;">
+                                <span><strong>Desenvolvido por:</strong></span>
+                                <span>Sistema Inteligente</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Zona de Perigo -->
+                    <div class="result-container danger-zone" style="margin-top: 20px;">
+                        <h4><i class="fas fa-exclamation-triangle"></i> Zona de Perigo</h4>
+                        <p style="margin-bottom: 15px; color: var(--danger);">
+                            <strong>Atenção:</strong> A ação abaixo é irreversível.
+                        </p>
+
+                        <form action="/limpar_historico" method="post" 
+                              onsubmit="return confirm('⚠️ ATENÇÃO: Esta ação apagará TODOS os registros do sistema. Esta operação é IRREVERSÍVEL. Tem certeza que deseja continuar?')">
+                            <input type="hidden" name="aba" value="tab-config">
+                            <button type="submit" class="btn btn-danger btn-block">
+                                <i class="fas fa-trash"></i> Limpar Todo o Histórico
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal para Câmera -->
+    <div id="cameraModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeCamera()">&times;</span>
+            <h2><i class="fas fa-camera"></i> Captura por Câmera</h2>
+            <div class="image-container">
+                <video id="video" width="100%" autoplay></video>
+                <canvas id="canvas" style="display: none;"></canvas>
+            </div>
+            <button class="btn btn-success btn-block" onclick="capturePhoto()" style="margin-top: 15px;">
+                <i class="fas fa-camera"></i> Capturar Foto
+            </button>
+        </div>
+    </div>
+
+    <script>
+        // Configuração inicial
+        let currentStream = null;
+        let detectedPlate = '';
+
+        // Abrir tabs
+        function openTab(tabName) {
+            document.querySelectorAll('.tab-content').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            document.querySelectorAll('.nav-tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            
+            document.getElementById(tabName).classList.add('active');
+            event.currentTarget.classList.add('active');
+            
+            // Atualiza URL sem recarregar a página
+            const url = new URL(window.location);
+            url.searchParams.set('aba', tabName);
+            window.history.replaceState({}, '', url);
+        }
+
+        // Função para trocar imagem
+        function trocarImagem() {
+            document.getElementById('imagePreview').style.display = 'none';
+            document.getElementById('imagePreview').src = '';
+            document.getElementById('uploadArea').style.display = 'flex';
+            document.getElementById('processingResult').style.display = 'none';
+            document.getElementById('fileInput').value = '';
+            detectedPlate = '';
+        }
+
+        // Processar imagem
+        async function processImage(file) {
+            if (!file) return;
+
+            const formData = new FormData();
+            formData.append('file', file);
+
+            // Mostrar preview
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                document.getElementById('imagePreview').src = e.target.result;
+                document.getElementById('imagePreview').style.display = 'block';
+                document.getElementById('uploadArea').style.display = 'none';
+            };
+            reader.readAsDataURL(file);
+
+            // Mostrar loading
+            document.getElementById('processingResult').style.display = 'block';
+            document.getElementById('resultDetails').innerHTML = '<p><i class="fas fa-spinner fa-spin"></i> Processando imagem...</p>';
+
+            try {
+                const response = await fetch('/processar_imagem', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const result = await response.json();
+
+                if (result.success) {
+                    document.getElementById('resultDetails').innerHTML = `
+                        <p><i class="fas fa-check-circle" style="color: var(--success);"></i> ${result.data.placas_detectadas} placa(s) detectada(s)</p>
+                        <p><strong>Método:</strong> ${result.data.detalhes[0].metodo}</p>
+                        <p><strong>Confiança:</strong> <span style="color: ${result.data.detalhes[0].confianca === 'alta' ? 'var(--success)' : result.data.detalhes[0].confianca === 'media' ? 'var(--warning)' : 'var(--danger)'}">${result.data.detalhes[0].confianca}</span></p>
+                    `;
+                    
+                    detectedPlate = result.data.detalhes[0].placa;
+                    document.getElementById('placaResult').textContent = detectedPlate;
+
+                    // Botões de ação
+                    if (result.data.detalhes[0].confianca !== 'nenhuma' && detectedPlate.length >= 6) {
+                        document.getElementById('actionButtons').innerHTML = `
+                            <button class="btn btn-success" onclick="registrarEntrada('${detectedPlate}')">
+                                <i class="fas fa-sign-in-alt"></i> Registrar Entrada
+                            </button>
+                            <button class="btn btn-warning" onclick="registrarSaida('${detectedPlate}')">
+                                <i class="fas fa-sign-out-alt"></i> Registrar Saída
+                            </button>
+                        `;
+                    } else {
+                        document.getElementById('actionButtons').innerHTML = `
+                            <p style="color: var(--danger); text-align: center;">
+                                <i class="fas fa-exclamation-triangle"></i> Placa não reconhecida corretamente
+                            </p>
+                        `;
+                    }
+                } else {
+                    document.getElementById('resultDetails').innerHTML = `
+                        <p><i class="fas fa-exclamation-triangle" style="color: var(--danger);"></i> Erro: ${result.message}</p>
+                    `;
+                }
+            } catch (error) {
+                document.getElementById('resultDetails').innerHTML = `
+                    <p><i class="fas fa-exclamation-triangle" style="color: var(--danger);"></i> Erro: ${error.message}</p>
+                `;
+            }
+        }
+
+        // Câmera
+        function captureFromCamera() {
+            document.getElementById('cameraModal').style.display = 'block';
+            startCamera();
+        }
+
+        function closeCamera() {
+            document.getElementById('cameraModal').style.display = 'none';
+            stopCamera();
+        }
+
+        async function startCamera() {
+            try {
+                const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+                document.getElementById('video').srcObject = stream;
+                currentStream = stream;
+            } catch (err) {
+                alert('Erro ao acessar a câmera: ' + err.message);
+                closeCamera();
+            }
+        }
+
+        function stopCamera() {
+            if (currentStream) {
+                currentStream.getTracks().forEach(track => track.stop());
+            }
+        }
+
+        function capturePhoto() {
+            const video = document.getElementById('video');
+            const canvas = document.getElementById('canvas');
+            const context = canvas.getContext('2d');
+
+            canvas.width = video.videoWidth;
+            canvas.height = video.videoHeight;
+            context.drawImage(video, 0, 0, canvas.width, canvas.height);
+
+            canvas.toBlob(function(blob) {
+                processImage(blob);
+                closeCamera();
+            }, 'image/jpeg');
+        }
+
+        // Registrar entrada/saída
+        function registrarEntrada(placa) {
+            document.getElementById('placaEntrada').value = placa;
+            document.getElementById('placaEntrada').form.submit();
+        }
+
+        function registrarSaida(placa) {
+            document.getElementById('placaSaida').value = placa;
+            document.getElementById('placaSaida').form.submit();
+        }
+
+        // Atualizar relógio
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('currentTime').textContent = 
+                now.getHours().toString().padStart(2, '0') + ':' + 
+                now.getMinutes().toString().padStart(2, '0') + ':' +
+                now.getSeconds().toString().padStart(2, '0');
+        }
+
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Calcular tempo decorrido para veículos estacionados
+        function updateElapsedTimes() {
+            document.querySelectorAll('.tempo-decorrido').forEach(element => {
+                const entrada = new Date(element.dataset.entrada);
+                const agora = new Date();
+                const diff = Math.floor((agora - entrada) / 1000); // diferença em segundos
+                
+                const horas = Math.floor(diff / 3600);
+                const minutos = Math.floor((diff % 3600) / 60);
+                const segundos = diff % 60;
+                
+                element.textContent = `${horas.toString().padStart(2, '0')}:${minutos.toString().padStart(2, '0')}:${segundos.toString().padStart(2, '0')}`;
+            });
+        }
+
+        setInterval(updateElapsedTimes, 1000);
+        updateElapsedTimes();
+
+        // Drag and drop
+        const imageContainer = document.getElementById('imageContainer');
+        
+        ['dragenter', 'dragover', 'dragleave', 'drop'].forEach(eventName => {
+            imageContainer.addEventListener(eventName, preventDefaults, false);
+        });
+
+        function preventDefaults(e) {
+            e.preventDefault();
+            e.stopPropagation();
+        }
+
+        ['dragenter', 'dragover'].forEach(eventName => {
+            imageContainer.addEventListener(eventName, highlight, false);
+        });
+
+        ['dragleave', 'drop'].forEach(eventName => {
+            imageContainer.addEventListener(eventName, unhighlight, false);
+        });
+
+        function highlight() {
+            imageContainer.style.borderColor = '#3498db';
+            imageContainer.style.backgroundColor = '#d6eaf8';
+        }
+
+        function unhighlight() {
+            imageContainer.style.borderColor = '';
+            imageContainer.style.backgroundColor = '';
+        }
+
+        imageContainer.addEventListener('drop', handleDrop, false);
+
+        function handleDrop(e) {
+            const dt = e.dataTransfer;
+            const files = dt.files;
+            if (files.length) {
+                processImage(files[0]);
+            }
+        }
+
+        // Configurar filtros para manter a aba
+        function configurarFiltros() {
+            // Adiciona parâmetro de aba aos links de filtro
+            document.querySelectorAll('a[href*="filtro="]').forEach(link => {
+                const url = new URL(link.href);
+                if (!url.searchParams.has('aba')) {
+                    url.searchParams.set('aba', 'tab-registros');
+                    link.href = url.toString();
+                }
+            });
+        }
+
+        // Chama a configuração quando o DOM estiver carregado
+        document.addEventListener('DOMContentLoaded', configurarFiltros);
+    </script>
+</body>
+</html>
